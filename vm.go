@@ -6,15 +6,17 @@ import (
 )
 
 type vm struct {
-	cmd       []byte
-	pc        int
-	mainStack []byte
-	pcStack   []int
-	lim       int
+	cmd           []byte
+	pc            int
+	mainStack     []byte
+	pcStack       []int
+	lim           int
+	activateLimit bool
 }
 
 func main() {
 	v := vm{}
+	v.activateLimit = false
 	v.lim = 10
 	v.cmd = append(v.cmd, debug, pushpc, debug, poppc)
 	v.Run()
@@ -25,7 +27,7 @@ func (m *vm) Run() {
 		if len(m.cmd) <= m.pc {
 			break
 		}
-		if m.lim <= 0 {
+		if m.lim <= 0 && m.activateLimit {
 			break
 		}
 		fmt.Print("pc :", m.pc, " cmd :")
