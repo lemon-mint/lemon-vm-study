@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type vm struct {
 	cmd       []byte
@@ -11,20 +14,7 @@ type vm struct {
 
 func main() {
 	v := vm{}
-	v.cmd = []byte{
-		debug,
-		add,
-		debug,
-	}
-	v.push(10, 40)
-	v.Run()
-	v.pc = 0
-	v.push(90)
-	v.cmd = []byte{
-		debug,
-		sub,
-		debug,
-	}
+	v.cmd = append(v.cmd, debug, pushpc, debug, poppc)
 	v.Run()
 }
 
@@ -35,6 +25,7 @@ func (m *vm) Run() {
 		}
 		fmt.Print("pc :", m.pc, " cmd :")
 		m.pc++
+		time.Sleep(time.Second)
 		switch m.cmd[m.pc-1] {
 		case add:
 			fmt.Println("ADD")
@@ -58,9 +49,25 @@ func (m *vm) Run() {
 				}
 			}
 			break
+		case inc:
+			fmt.Println("INC")
+			a, ok := m.pop()
+			if ok {
+				m.push(a + 1)
+				continue
+			}
+			break
+		case dec:
+			fmt.Println("DEC")
+			a, ok := m.pop()
+			if ok {
+				m.push(a - 1)
+				continue
+			}
+			break
 		case pushpc:
 			fmt.Println("PUSHPC")
-			m.pcStack = append(m.pcStack, m.pc)
+			m.pcStack = append(m.pcStack, m.pc-1)
 			continue
 		case poppc:
 			fmt.Println("POPPC")
@@ -73,7 +80,8 @@ func (m *vm) Run() {
 			break
 		case debug:
 			fmt.Println("DEBUG")
-			fmt.Println(m.mainStack)
+			fmt.Println("Stack :", m.mainStack)
+			fmt.Println("pc Stack :", m.pcStack)
 		default:
 			break
 		}
