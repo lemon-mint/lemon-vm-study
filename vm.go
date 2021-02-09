@@ -10,10 +10,12 @@ type vm struct {
 	pc        int
 	mainStack []byte
 	pcStack   []int
+	lim       int
 }
 
 func main() {
 	v := vm{}
+	v.lim = 10
 	v.cmd = append(v.cmd, debug, pushpc, debug, poppc)
 	v.Run()
 }
@@ -23,12 +25,16 @@ func (m *vm) Run() {
 		if len(m.cmd) <= m.pc {
 			break
 		}
+		if m.lim <= 0 {
+			break
+		}
 		fmt.Print("pc :", m.pc, " cmd :")
 		m.pc++
 		time.Sleep(time.Second)
 		switch m.cmd[m.pc-1] {
 		case add:
 			fmt.Println("ADD")
+			m.lim--
 			a, ok := m.pop()
 			if ok {
 				b, ok := m.pop()
@@ -39,6 +45,7 @@ func (m *vm) Run() {
 			}
 			break
 		case sub:
+			m.lim--
 			fmt.Println("SUB")
 			a, ok := m.pop()
 			if ok {
@@ -50,6 +57,7 @@ func (m *vm) Run() {
 			}
 			break
 		case inc:
+			m.lim--
 			fmt.Println("INC")
 			a, ok := m.pop()
 			if ok {
@@ -58,6 +66,7 @@ func (m *vm) Run() {
 			}
 			break
 		case dec:
+			m.lim--
 			fmt.Println("DEC")
 			a, ok := m.pop()
 			if ok {
@@ -66,10 +75,12 @@ func (m *vm) Run() {
 			}
 			break
 		case pushpc:
+			m.lim--
 			fmt.Println("PUSHPC")
 			m.pcStack = append(m.pcStack, m.pc-1)
 			continue
 		case poppc:
+			m.lim--
 			fmt.Println("POPPC")
 			if len(m.pcStack) > 0 {
 				idx := len(m.pcStack) - 1
