@@ -43,7 +43,7 @@ func main() {
 		printmem0,
 		decptr,
 
-		//mul
+		//mul 2 * 64 = 128
 		incptr,
 		pushpc,
 		incptr,
@@ -77,6 +77,7 @@ func main() {
 
 		debug,
 		printmem0,
+		// [128 0 0 0 0...]
 	)
 	v.Run()
 }
