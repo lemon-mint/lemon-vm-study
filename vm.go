@@ -9,6 +9,7 @@ type vm struct {
 	pc            int
 	mainStack     []byte
 	pcStack       []int
+	ptrStack      stack
 	lim           int
 	memory        []byte
 	ptr           int
@@ -156,6 +157,38 @@ func (m *vm) Run() {
 			fmt.Println("DEBUG")
 			fmt.Println("Stack :", m.mainStack)
 			fmt.Println("pc Stack :", m.pcStack)
+		case incptr:
+			m.lim--
+			fmt.Println("INCPTR")
+			m.ptr++
+		case decptr:
+			m.lim--
+			fmt.Println("DECPTR")
+			m.ptr--
+		case push:
+			m.lim--
+			fmt.Println("PUSH")
+			m.push(m.memory[m.ptr])
+		case pull:
+			m.lim--
+			fmt.Println("PULL")
+			v, ok := m.pop()
+			if ok {
+				m.memory[m.ptr] = v
+			}
+		case saveptr:
+			m.lim--
+			fmt.Println("SAVEPTR")
+			m.ptrStack.push(m.ptr)
+		case loadptr:
+			m.lim--
+			fmt.Println("LOADPTR")
+			v, ok := m.ptrStack.pop()
+			if ok {
+				m.ptr = v
+			}
+		case delptr:
+			m.ptrStack.pop()
 		default:
 			break
 		}

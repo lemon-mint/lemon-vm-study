@@ -9,6 +9,9 @@ const incptr byte = 201
 const decptr byte = 202
 const push byte = 211
 const pull byte = 212
+const saveptr byte = 221
+const loadptr byte = 222
+const delptr byte = 223
 
 const copy byte = 30
 const pushzero byte = 40
