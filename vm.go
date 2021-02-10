@@ -81,6 +81,18 @@ func (m *vm) Run() {
 			fmt.Println("PUSHPC")
 			m.pcStack = append(m.pcStack, m.pc-1)
 			continue
+		case cmpjmp:
+			m.lim--
+			fmt.Println("CMPJMP")
+			if len(m.pcStack) > 0 && len(m.mainStack) > 0 {
+				idx := len(m.pcStack) - 1
+				if m.mainStack[idx] > 0 {
+					m.pc = m.pcStack[idx]
+					m.pcStack = m.pcStack[:idx]
+				}
+				continue
+			}
+			break
 		case poppc:
 			m.lim--
 			fmt.Println("POPPC")
