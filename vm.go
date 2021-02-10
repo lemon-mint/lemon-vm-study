@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
 type vm struct {
@@ -18,7 +17,7 @@ func main() {
 	v := vm{}
 	v.activateLimit = false
 	v.lim = 10
-	v.cmd = append(v.cmd, debug, pushpc, debug, poppc)
+	v.cmd = append(v.cmd, debug, pushzero, inc, inc, debug, copy, add, debug, copy, add, debug, pushpc, debug, dec, cmpjmp, debug)
 	v.Run()
 }
 
@@ -32,7 +31,7 @@ func (m *vm) Run() {
 		}
 		fmt.Print("pc :", m.pc, " cmd :")
 		m.pc++
-		time.Sleep(time.Second)
+		//time.Sleep(time.Microsecond * 1000)
 		switch m.cmd[m.pc-1] {
 		case add:
 			fmt.Println("ADD")
@@ -113,6 +112,18 @@ func (m *vm) Run() {
 			v, ok := m.pop()
 			if ok {
 				m.push(v, v)
+			}
+		case pop:
+			m.lim--
+			fmt.Println("POP")
+			m.pop()
+		case delpc:
+			m.lim--
+			fmt.Println("DELPC")
+			if len(m.pcStack) > 0 {
+				idx := len(m.pcStack) - 1
+				m.pcStack = m.pcStack[:idx]
+				continue
 			}
 		case debug:
 			fmt.Println("DEBUG")
