@@ -10,6 +10,8 @@ type vm struct {
 	mainStack     []byte
 	pcStack       []int
 	lim           int
+	memory        []byte
+	ptr           int
 	activateLimit bool
 }
 
@@ -17,11 +19,33 @@ func main() {
 	v := vm{}
 	v.activateLimit = false
 	v.lim = 10
-	v.cmd = append(v.cmd, debug, pushzero, inc, inc, debug, copy, add, debug, copy, add, debug, pushpc, debug, dec, cmpjmp, debug)
+	v.cmd = append(v.cmd,
+		debug,
+		pushzero,
+		inc,
+		inc,
+		debug,
+		copy,
+		add,
+		debug,
+		copy,
+		add,
+		debug,
+		pushpc,
+		debug,
+		dec,
+		cmpjmp,
+		debug,
+		delpc,
+		debug,
+		pop,
+		debug,
+	)
 	v.Run()
 }
 
 func (m *vm) Run() {
+	m.memory = make([]byte, 1024)
 	for {
 		if len(m.cmd) <= m.pc {
 			break

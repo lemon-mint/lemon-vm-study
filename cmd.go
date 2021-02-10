@@ -5,6 +5,11 @@ const sub byte = 20
 const inc byte = 15
 const dec byte = 25
 
+const incptr byte = 201
+const decptr byte = 202
+const push byte = 211
+const pull byte = 212
+
 const copy byte = 30
 const pushzero byte = 40
 
