@@ -103,6 +103,17 @@ func (m *vm) Run() {
 				continue
 			}
 			break
+		case pushzero:
+			m.lim--
+			fmt.Println("PUSHZERO")
+			m.push(0)
+		case copy:
+			m.lim--
+			fmt.Println("COPY")
+			v, ok := m.pop()
+			if ok {
+				m.push(v, v)
+			}
 		case debug:
 			fmt.Println("DEBUG")
 			fmt.Println("Stack :", m.mainStack)

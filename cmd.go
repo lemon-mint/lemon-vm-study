@@ -5,6 +5,9 @@ const sub byte = 20
 const inc byte = 15
 const dec byte = 25
 
+const copy byte = 30
+const pushzero byte = 40
+
 const cmpjmp byte = 3
 
 const pushpc byte = 1
