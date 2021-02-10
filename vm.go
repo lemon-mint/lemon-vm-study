@@ -125,6 +125,9 @@ func (m *vm) Run() {
 				m.pcStack = m.pcStack[:idx]
 				continue
 			}
+		case exit:
+			fmt.Println("EXIT")
+			break
 		case debug:
 			fmt.Println("DEBUG")
 			fmt.Println("Stack :", m.mainStack)

@@ -14,5 +14,6 @@ const cmpjmp byte = 3
 const delpc byte = 4
 
 const pop byte = 100
+const exit byte = 101
 
 const debug byte = 255
