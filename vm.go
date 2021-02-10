@@ -21,26 +21,62 @@ func main() {
 	v.activateLimit = false
 	v.lim = 10
 	v.cmd = append(v.cmd,
-		debug,
-		pushzero,
+		push,
 		inc,
 		inc,
-		debug,
+		pull,
+		incptr,
+		push,
+		inc,
+		inc,
 		copy,
 		add,
-		debug,
 		copy,
 		add,
-		debug,
+		copy,
+		add,
+		copy,
+		add,
+		copy,
+		add,
+		pull,
+		printmem0,
+		decptr,
+
+		//mul
+		incptr,
 		pushpc,
-		debug,
+		incptr,
+		push,
+		decptr,
+		decptr,
+		push,
+		add,
+		incptr,
+		incptr,
+		pull,
+		decptr,
+		push,
 		dec,
+		pull,
+		push,
 		cmpjmp,
-		debug,
 		delpc,
+		incptr,
+		push,
+		decptr,
+		decptr,
+		pull,
+		pushzero,
+		incptr,
+		incptr,
+		pull,
+		decptr,
+		decptr,
+		//mul end
+
 		debug,
-		pop,
-		debug,
+		printmem0,
 	)
 	v.Run()
 }
@@ -108,9 +144,10 @@ func (m *vm) Run() {
 		case cmpjmp:
 			m.lim--
 			fmt.Println("CMPJMP")
-			if len(m.pcStack) > 0 && len(m.mainStack) > 0 {
+			if len(m.pcStack) > 0 {
 				idx := len(m.pcStack) - 1
-				if m.mainStack[idx] > 0 {
+				v, ok := m.pop()
+				if v > 0 && ok {
 					m.pc = m.pcStack[idx]
 					m.pcStack = m.pcStack[:idx]
 				}
@@ -157,6 +194,7 @@ func (m *vm) Run() {
 			fmt.Println("DEBUG")
 			fmt.Println("Stack :", m.mainStack)
 			fmt.Println("pc Stack :", m.pcStack)
+			fmt.Println("ptr :", m.ptr)
 		case incptr:
 			m.lim--
 			fmt.Println("INCPTR")
@@ -188,7 +226,11 @@ func (m *vm) Run() {
 				m.ptr = v
 			}
 		case delptr:
+			fmt.Println("DELPTR")
 			m.ptrStack.pop()
+		case printmem0:
+			fmt.Println("PRINTMEM0")
+			fmt.Println(m.memory[:30])
 		default:
 			break
 		}

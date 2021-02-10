@@ -9,6 +9,7 @@ const incptr byte = 201
 const decptr byte = 202
 const push byte = 211
 const pull byte = 212
+
 const saveptr byte = 221
 const loadptr byte = 222
 const delptr byte = 223
@@ -24,4 +25,5 @@ const delpc byte = 4
 const pop byte = 100
 const exit byte = 101
 
+const printmem0 byte = 254
 const debug byte = 255
