@@ -24,6 +24,7 @@ func main() {
 		push,
 		inc,
 		inc,
+		inc,
 		pull,
 		incptr,
 		push,
@@ -39,11 +40,12 @@ func main() {
 		add,
 		copy,
 		add,
+		inc,
 		pull,
 		printmem0,
 		decptr,
 
-		//mul 2 * 64 = 128
+		//mul 3 * 65 = 195
 		incptr,
 		pushpc,
 		incptr,
@@ -77,7 +79,7 @@ func main() {
 
 		debug,
 		printmem0,
-		// [128 0 0 0 0...]
+		// [195 0 0 0 0...]
 	)
 	v.Run()
 }
